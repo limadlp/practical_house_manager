@@ -3,7 +3,7 @@ import 'package:practical_house_manager/app/core/extensions/custom_scroll_behavi
 import 'package:practical_house_manager/app/core/themes/dark_mode.dart';
 import 'package:practical_house_manager/app/pages/settings/settings_page.dart';
 import 'package:practical_house_manager/app/pages/shell/shell_page.dart';
-import 'package:practical_house_manager/app/ui/shopping_grid_page.dart';
+import 'package:practical_house_manager/app/pages/shopping_grid/shopping_grid_page.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 

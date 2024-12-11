@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:practical_house_manager/app/pages/settings/settings_page.dart';
-import 'package:practical_house_manager/app/ui/shopping_list_card.dart';
+import 'package:practical_house_manager/app/pages/shopping_grid/widgets/shopping_list_card.dart';
 
 class ShoppingGridPage extends StatelessWidget {
   final List<Map<String, dynamic>> shoppingLists = List.generate(10, (index) {
