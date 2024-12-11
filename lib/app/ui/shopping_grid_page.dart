@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:practical_house_manager/app/pages/settings/settings_page.dart';
 import 'package:practical_house_manager/app/ui/shopping_list_card.dart';
 
 class ShoppingGridPage extends StatelessWidget {
@@ -30,6 +31,18 @@ class ShoppingGridPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Listas de Compras'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              // Go to settings page
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const SettingsPage()));
+            },
+            icon: const Icon(Icons.settings),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -40,9 +53,12 @@ class ShoppingGridPage extends StatelessWidget {
           itemCount: shoppingLists.length,
           itemBuilder: (context, index) {
             final list = shoppingLists[index];
-            return ShoppingListCard(
-              type: list['type'],
-              items: list['items'],
+            return Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: ShoppingListCard(
+                type: list['type'],
+                items: list['items'],
+              ),
             );
           },
         ),
