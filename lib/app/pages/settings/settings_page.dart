@@ -26,28 +26,30 @@ class _SettingsContentState extends State<_SettingsContent> {
   @override
   Widget build(BuildContext context) {
     final themeMode = Provider.of<DarkMode>(context);
-    return Column(
-      children: [
-        Expanded(
-          child: ListView(
-            children: [
-              ListTile(
-                leading: const Icon(Icons.dark_mode, size: 35),
-                title: const Text("Dark Mode"),
-                subtitle: const Text("Here you can change your theme."),
-                trailing: Switch(
-                  value: themeMode.darkMode,
-                  activeTrackColor: Colors.white,
-                  activeColor: Colors.grey,
-                  onChanged: (value) {
-                    themeMode.changeMode();
-                  },
+    return Scaffold(
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.dark_mode, size: 35),
+                  title: const Text("Dark Mode"),
+                  subtitle: const Text("Here you can change your theme."),
+                  trailing: Switch(
+                    value: themeMode.darkMode,
+                    activeTrackColor: Colors.white,
+                    activeColor: Colors.grey,
+                    onChanged: (value) {
+                      themeMode.changeMode();
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
