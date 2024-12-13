@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ShoppingListCard extends StatelessWidget {
   final String type;
-  final List<String> items;
+  final List<dynamic> items;
 
   const ShoppingListCard({
     super.key,
@@ -28,8 +28,12 @@ class ShoppingListCard extends StatelessWidget {
               (item) => Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Text(
-                  '- $item',
-                  style: Theme.of(context).textTheme.bodyLarge,
+                  '- ${item['name']}',
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        decoration: item['checked'] == true
+                            ? TextDecoration.lineThrough
+                            : TextDecoration.none,
+                      ),
                 ),
               ),
             ),

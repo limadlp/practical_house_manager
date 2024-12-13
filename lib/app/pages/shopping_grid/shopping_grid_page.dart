@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:go_router/go_router.dart';
 import 'package:practical_house_manager/app/pages/settings/settings_page.dart';
 import 'package:practical_house_manager/app/pages/shopping_grid/widgets/shopping_list_card.dart';
 
@@ -20,10 +21,13 @@ class ShoppingGridPage extends StatelessWidget {
 
     return {
       'type': listType,
-      'items': List.generate(itemCount, (i) => '$listType Item ${i + 1}')
+      'slug': listType.toLowerCase().replaceAll(' ', '-'),
+      'items': List.generate(
+        itemCount,
+        (i) => {'name': '$listType Item ${i + 1}', 'checked': false},
+      )
     };
   });
-
   ShoppingGridPage({super.key});
 
   @override
@@ -55,9 +59,16 @@ class ShoppingGridPage extends StatelessWidget {
             final list = shoppingLists[index];
             return Padding(
               padding: const EdgeInsets.all(2.0),
-              child: ShoppingListCard(
-                type: list['type'],
-                items: list['items'],
+              child: InkWell(
+                onTap: () {
+                  // Go to /list_items and pass list as query parameter
+                  GoRouter.of(context)
+                      .push('/list_items/${list['slug']}', extra: list);
+                },
+                child: ShoppingListCard(
+                  type: list['type'],
+                  items: list['items'],
+                ),
               ),
             );
           },

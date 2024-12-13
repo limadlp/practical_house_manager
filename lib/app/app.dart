@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:practical_house_manager/app/core/extensions/custom_scroll_behavior.dart';
 import 'package:practical_house_manager/app/core/themes/dark_mode.dart';
+import 'package:practical_house_manager/app/pages/list_items/list_items_page.dart';
 import 'package:practical_house_manager/app/pages/settings/settings_page.dart';
 import 'package:practical_house_manager/app/pages/shell/shell_page.dart';
 import 'package:practical_house_manager/app/pages/shopping_grid/shopping_grid_page.dart';
@@ -43,6 +44,20 @@ final GoRouter _router = GoRouter(
           pageBuilder: (context, state) => NoTransitionPage(
             child: ShoppingGridPage(),
           ),
+        ),
+        GoRoute(
+          path: '/list_items/:slug',
+          pageBuilder: (context, state) {
+            final slug = state.pathParameters['slug']!;
+            final list = state.extra as Map<String, dynamic>;
+
+            return NoTransitionPage(
+              child: ListItemsPage(
+                slug: slug,
+                list: list,
+              ),
+            );
+          },
         ),
         GoRoute(
           path: '/search',
