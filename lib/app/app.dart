@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:practical_house_manager/app/core/extensions/custom_scroll_behavior.dart';
+import 'package:practical_house_manager/app/core/themes/color_seed.dart';
 import 'package:practical_house_manager/app/core/themes/dark_mode.dart';
 import 'package:practical_house_manager/app/pages/list_items/list_items_page.dart';
 import 'package:practical_house_manager/app/pages/settings/settings_page.dart';
@@ -14,13 +15,14 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeMode = Provider.of<DarkMode>(context);
+    final colorProvider = Provider.of<ColorSeed>(context);
     return MaterialApp.router(
       routerConfig: _router,
       title: 'Praction House Manager',
       //theme: themeMode.darkMode ? ThemeData.dark() : ThemeData.light(),
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.yellow,
+          seedColor: colorProvider.colorSeed,
           brightness: themeMode.darkMode ? Brightness.dark : Brightness.light,
         ),
       ),
