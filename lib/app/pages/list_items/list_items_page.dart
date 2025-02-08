@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:practical_house_manager/app/core/themes/neobrutalism.dart';
-import 'package:provider/provider.dart';
 
 class ListItemsPage extends StatefulWidget {
   final String slug;

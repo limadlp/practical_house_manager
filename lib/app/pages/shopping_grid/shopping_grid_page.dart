@@ -1,12 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:practical_house_manager/app/core/themes/neobrutalism.dart';
-import 'package:practical_house_manager/app/pages/settings/settings_page.dart';
+import 'package:practical_house_manager/app/modules/settings/settings_page.dart';
 import 'package:practical_house_manager/app/pages/shopping_grid/widgets/shopping_list_card.dart';
-import 'package:provider/provider.dart';
 
 class ShoppingGridPage extends StatelessWidget {
   final List<Map<String, dynamic>> shoppingLists = List.generate(10, (index) {

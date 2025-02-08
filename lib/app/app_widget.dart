@@ -3,11 +3,10 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:practical_house_manager/app/core/extensions/custom_scroll_behavior.dart';
 import 'package:practical_house_manager/app/core/themes/color_seed.dart';
 import 'package:practical_house_manager/app/core/themes/dark_mode.dart';
+import 'package:practical_house_manager/app/modules/settings/settings_page.dart';
 import 'package:practical_house_manager/app/pages/list_items/list_items_page.dart';
-import 'package:practical_house_manager/app/pages/settings/settings_page.dart';
 import 'package:practical_house_manager/app/pages/shell/shell_page.dart';
 import 'package:practical_house_manager/app/pages/shopping_grid/shopping_grid_page.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 
 class AppWidget extends StatelessWidget {
@@ -15,22 +14,27 @@ class AppWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeMode = Provider.of<DarkMode>(context);
-    final colorProvider = Provider.of<ColorSeed>(context);
-    return MaterialApp.router(
-      routerConfig: Modular.routerConfig,
-      title: 'Praction House Manager',
-      //theme: themeMode.darkMode ? ThemeData.dark() : ThemeData.light(),
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: colorProvider.colorSeed,
-          brightness: themeMode.darkMode ? Brightness.dark : Brightness.light,
-        ),
-      ),
-      scrollBehavior: CustomScrollBehavior(),
-      debugShowCheckedModeBanner: false,
-    );
+    final themeMode = Modular.get<DarkMode>();
+    final colorProvider = Modular.get<ColorSeed>();
+    return AnimatedBuilder(
+        animation: themeMode,
+        builder: (context, _) {
+          return MaterialApp.router(
+            routerConfig: Modular.routerConfig,
+            title: 'Praction House Manager',
+            //theme: themeMode.darkMode ? ThemeData.dark() : ThemeData.light(),
+            theme: ThemeData(
+              useMaterial3: true,
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: colorProvider.colorSeed,
+                brightness:
+                    themeMode.darkMode ? Brightness.dark : Brightness.light,
+              ),
+            ),
+            scrollBehavior: CustomScrollBehavior(),
+            debugShowCheckedModeBanner: false,
+          );
+        });
   }
 }
 
