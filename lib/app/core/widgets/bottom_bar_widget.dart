@@ -13,7 +13,7 @@ class _BottomBarWidgetState extends State<BottomBarWidget> {
   int _currentIndex = 0;
 
   final List<String> _routes = [
-    AppRoutes.home,
+    AppRoutes.shoplist,
     AppRoutes.settings,
     AppRoutes.profile,
   ];
@@ -22,7 +22,7 @@ class _BottomBarWidgetState extends State<BottomBarWidget> {
   void initState() {
     super.initState();
 
-    Modular.to.navigate(AppRoutes.home);
+    Modular.to.navigate(AppRoutes.shoplist);
 
     _updateIndex(Modular.to.path);
 
@@ -61,7 +61,8 @@ class _BottomBarWidgetState extends State<BottomBarWidget> {
           Modular.to.navigate(_routes[index]);
         },
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_basket_outlined), label: 'Shoplist'),
           BottomNavigationBarItem(
               icon: Icon(Icons.settings), label: 'Settings'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
