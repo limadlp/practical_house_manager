@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:practical_house_manager/app/core/themes/neobrutalism.dart';
+import 'package:practical_house_manager/app/core/themes/theme_controller.dart';
 
 class ShoppingListCard extends StatelessWidget {
   final String type;
@@ -14,7 +14,7 @@ class ShoppingListCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isNeoBrutalism = Modular.get<Neobrutalism>().neobrutalism;
+    final isNeoBrutalism = Modular.get<ThemeController>().neobrutalism;
     if (isNeoBrutalism) {
       return Card(
         elevation: 0,

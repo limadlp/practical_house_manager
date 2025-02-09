@@ -3,8 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:go_router/go_router.dart';
-import 'package:practical_house_manager/app/core/themes/neobrutalism.dart';
+import 'package:practical_house_manager/app/core/themes/theme_controller.dart';
 import 'package:practical_house_manager/app/modules/settings/settings_page.dart';
 import 'package:practical_house_manager/app/pages/shopping_grid/widgets/shopping_list_card.dart';
 
@@ -34,7 +33,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isNeobrutalism = context.watch<Neobrutalism>().neobrutalism;
+    final isNeobrutalism = context.watch<ThemeController>().neobrutalism;
 
     return Scaffold(
       appBar: AppBar(
@@ -75,8 +74,8 @@ class HomePage extends StatelessWidget {
                 padding: const EdgeInsets.all(2.0),
                 child: InkWell(
                   onTap: () {
-                    GoRouter.of(context)
-                        .push('/list_items/${list['slug']}', extra: list);
+                    Modular.to.pushNamed('/list_items/${list['slug']}',
+                        arguments: list);
                   },
                   child: ShoppingListCard(
                     type: list['type'],

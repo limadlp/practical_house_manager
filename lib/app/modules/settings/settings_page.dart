@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:practical_house_manager/app/core/themes/color_seed.dart';
-import 'package:practical_house_manager/app/core/themes/dark_mode.dart';
-import 'package:practical_house_manager/app/core/themes/neobrutalism.dart';
+import 'package:practical_house_manager/app/core/themes/theme_controller.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -31,74 +29,72 @@ class _SettingsContentState extends State<_SettingsContent> {
     // final neobrutalismMode = Provider.of<Neobrutalism>(context);
     // final colorSeed = Provider.of<ColorSeed>(context);
 
-    final themeMode = Modular.get<DarkMode>();
-    final neobrutalismMode = Modular.get<Neobrutalism>();
-    final colorSeed = Modular.get<ColorSeed>();
+    final themeController = Modular.get<ThemeController>();
 
     return Scaffold(
       body: Column(
         children: [
           Expanded(
-            child: ListView(
-              children: [
-                AnimatedBuilder(
-                    animation: themeMode,
-                    builder: (context, _) {
-                      return ListTile(
+            child: AnimatedBuilder(
+                animation: themeController,
+                builder: (context, _) {
+                  return ListView(
+                    children: [
+                      ListTile(
                         leading: const Icon(Icons.dark_mode, size: 35),
                         title: const Text("Dark Mode"),
                         subtitle: const Text("Here you can change your theme."),
                         trailing: Switch(
-                          value: themeMode.darkMode,
+                          value: themeController.darkMode,
                           activeTrackColor: Colors.white,
                           activeColor: Colors.grey,
                           onChanged: (value) {
-                            themeMode.changeMode();
+                            themeController.toggleDarkMode();
                           },
                         ),
-                      );
-                    }),
-                ListTile(
-                  leading: const Icon(Icons.style, size: 35),
-                  title: const Text("Neobrutalism"),
-                  subtitle: const Text("Toggle neobrutalism style."),
-                  trailing: Switch(
-                    value: neobrutalismMode.neobrutalism,
-                    activeTrackColor: Colors.white,
-                    activeColor: Colors.grey,
-                    onChanged: (value) {
-                      neobrutalismMode.changeMode();
-                    },
-                  ),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.palette, size: 35),
-                  title: const Text("Color Seed"),
-                  subtitle: Container(
-                    width: 24,
-                    height: 24,
-                    decoration: BoxDecoration(
-                      color: colorSeed.colorSeed,
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(color: Colors.black, width: 1),
-                    ),
-                  ),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.arrow_forward),
-                    onPressed: () {
-                      _showColorPicker(context, colorSeed);
-                    },
-                  ),
-                ),
-              ],
-            ),
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.style, size: 35),
+                        title: const Text("Neobrutalism"),
+                        subtitle: const Text("Toggle neobrutalism style."),
+                        trailing: Switch(
+                          value: themeController.neobrutalism,
+                          activeTrackColor: Colors.white,
+                          activeColor: Colors.grey,
+                          onChanged: (value) {
+                            themeController.toggleNeobrutalism();
+                          },
+                        ),
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.palette, size: 35),
+                        title: const Text("Color Seed"),
+                        subtitle: Container(
+                          width: 24,
+                          height: 24,
+                          decoration: BoxDecoration(
+                            color: themeController.colorSeed,
+                            borderRadius: BorderRadius.circular(4),
+                            border: Border.all(color: Colors.black, width: 1),
+                          ),
+                        ),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.arrow_forward),
+                          onPressed: () {
+                            _showColorPicker(context, themeController);
+                          },
+                        ),
+                      ),
+                    ],
+                  );
+                }),
           ),
         ],
       ),
     );
   }
 
-  void _showColorPicker(BuildContext context, ColorSeed colorSeed) {
+  void _showColorPicker(BuildContext context, ThemeController themeController) {
     showModalBottomSheet(
       context: context,
       builder: (_) {
@@ -114,7 +110,7 @@ class _SettingsContentState extends State<_SettingsContent> {
             final color = Colors.primaries[index];
             return GestureDetector(
               onTap: () {
-                colorSeed.changeColor(color);
+                themeController.changeColor(color);
                 Navigator.pop(context);
               },
               child: Container(
@@ -123,7 +119,7 @@ class _SettingsContentState extends State<_SettingsContent> {
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
                     color: Colors.black,
-                    width: colorSeed.colorSeed == color ? 3 : 1,
+                    width: themeController.colorSeed == color ? 3 : 1,
                   ),
                 ),
               ),

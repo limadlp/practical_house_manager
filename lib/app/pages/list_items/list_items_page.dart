@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:practical_house_manager/app/core/themes/neobrutalism.dart';
+import 'package:practical_house_manager/app/core/themes/theme_controller.dart';
 
 class ListItemsPage extends StatefulWidget {
   final String slug;
@@ -15,7 +15,7 @@ class ListItemsPage extends StatefulWidget {
 class _ListItemsPageState extends State<ListItemsPage> {
   @override
   Widget build(BuildContext context) {
-    final isNeobrutalism = context.watch<Neobrutalism>().neobrutalism;
+    final isNeobrutalism = context.watch<ThemeController>().neobrutalism;
     final theme = Theme.of(context);
 
     return Scaffold(
