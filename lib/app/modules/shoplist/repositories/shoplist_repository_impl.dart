@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
+import 'dart:developer';
+import 'dart:math' as math;
 import 'package:practical_house_manager/app/core/http/http_client.dart';
 import 'package:web_socket_channel/io.dart';
 import '../models/shop_list.dart';
@@ -73,16 +74,18 @@ class ShopListRepositoryImpl implements ShopListRepository {
   void _connectWebSocket() {
     _channel = IOWebSocketChannel.connect(
       "ws://localhost:8080/ws",
-      pingInterval: Duration(seconds: 30),
+      pingInterval: const Duration(seconds: 30),
     );
 
     _subscription = _channel!.stream
-        .timeout(Duration(seconds: 45))
+        .timeout(const Duration(seconds: 45))
         .listen(_handleMessage, onError: (error) {
-      print("Erro no WebSocket: $error");
+      log("Erro no WebSocket: $error");
+      _onUpdate?.call(ShopListUpdate.error());
       _scheduleReconnect();
     }, onDone: () {
-      print("WebSocket desconectado");
+      log("WebSocket desconectado");
+      _onUpdate?.call(ShopListUpdate.error());
       _scheduleReconnect();
     });
   }
@@ -92,14 +95,21 @@ class ShopListRepositoryImpl implements ShopListRepository {
       final update = ShopListUpdate.fromJson(jsonDecode(message));
       _onUpdate?.call(update);
     } catch (e) {
-      print("Erro ao processar WebSocket: $e");
+      log("Erro ao processar WebSocket: $e");
     }
   }
 
   void _scheduleReconnect() {
     _retryCount++;
-    Future.delayed(Duration(seconds: pow(2, _retryCount).clamp(1, 30).toInt()),
-        _connectWebSocket);
+    Future.delayed(
+      Duration(seconds: math.pow(2, _retryCount).clamp(1, 30).toInt()),
+      () {
+        if (_retryCount > 5) {
+          _retryCount = 0; // Previne overflow
+        }
+        _connectWebSocket();
+      },
+    );
   }
 
   @override

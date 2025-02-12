@@ -41,6 +41,55 @@ mixin _$ShopListStore on _ShopListStoreBase, Store {
     });
   }
 
+  late final _$isWebSocketConnectedAtom =
+      Atom(name: '_ShopListStoreBase.isWebSocketConnected', context: context);
+
+  @override
+  bool get isWebSocketConnected {
+    _$isWebSocketConnectedAtom.reportRead();
+    return super.isWebSocketConnected;
+  }
+
+  @override
+  set isWebSocketConnected(bool value) {
+    _$isWebSocketConnectedAtom.reportWrite(value, super.isWebSocketConnected,
+        () {
+      super.isWebSocketConnected = value;
+    });
+  }
+
+  late final _$retryCountAtom =
+      Atom(name: '_ShopListStoreBase.retryCount', context: context);
+
+  @override
+  int get retryCount {
+    _$retryCountAtom.reportRead();
+    return super.retryCount;
+  }
+
+  @override
+  set retryCount(int value) {
+    _$retryCountAtom.reportWrite(value, super.retryCount, () {
+      super.retryCount = value;
+    });
+  }
+
+  late final _$fetchErrorAtom =
+      Atom(name: '_ShopListStoreBase.fetchError', context: context);
+
+  @override
+  String? get fetchError {
+    _$fetchErrorAtom.reportRead();
+    return super.fetchError;
+  }
+
+  @override
+  set fetchError(String? value) {
+    _$fetchErrorAtom.reportWrite(value, super.fetchError, () {
+      super.fetchError = value;
+    });
+  }
+
   late final _$fetchListsAsyncAction =
       AsyncAction('_ShopListStoreBase.fetchLists', context: context);
 
@@ -78,7 +127,10 @@ mixin _$ShopListStore on _ShopListStoreBase, Store {
   String toString() {
     return '''
 lists: ${lists},
-isLoading: ${isLoading}
+isLoading: ${isLoading},
+isWebSocketConnected: ${isWebSocketConnected},
+retryCount: ${retryCount},
+fetchError: ${fetchError}
     ''';
   }
 }

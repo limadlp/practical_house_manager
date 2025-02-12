@@ -1,24 +1,16 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:practical_house_manager/app/core/themes/theme_controller.dart';
-import 'package:practical_house_manager/app/modules/settings/settings_page.dart';
-import 'package:practical_house_manager/app/modules/shoplist/models/shop_item.dart';
+import 'package:practical_house_manager/app/modules/shoplist/pages/widgets/shop_list_card.dart';
 import 'package:practical_house_manager/app/modules/shoplist/stores/shoplist_store.dart';
-import 'package:practical_house_manager/app/pages/shopping_grid/widgets/shopping_list_card.dart';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-import '../stores/shoplist_store.dart';
 import '../models/shop_list.dart';
 
 class ShoplistPage extends StatefulWidget {
+  const ShoplistPage({super.key});
+
   @override
-  _ShoplistPageState createState() => _ShoplistPageState();
+  State<ShoplistPage> createState() => _ShoplistPageState();
 }
 
 class _ShoplistPageState extends State<ShoplistPage> {
@@ -30,81 +22,110 @@ class _ShoplistPageState extends State<ShoplistPage> {
     super.dispose();
   }
 
+  Widget _buildConnectionErrorBanner() {
+    return Container(
+      color: Colors.red,
+      padding: const EdgeInsets.all(12),
+      child: Row(
+        children: [
+          const Icon(Icons.warning, color: Colors.white),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Conexão perdida",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  "Tentando reconectar... (${store.retryCount})",
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Listas de Compras")),
-      body: Observer(
-        builder: (_) {
-          if (store.isLoading) {
-            return Center(child: CircularProgressIndicator());
-          }
+      appBar: AppBar(title: const Text("Listas de Compras")),
+      body: RefreshIndicator(
+        onRefresh: () => store.fetchLists(),
+        child: Observer(
+          builder: (_) {
+            if (store.isLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-          if (store.lists.isEmpty) {
-            return Center(child: Text("Nenhuma lista disponível"));
-          }
+            if (store.fetchError != null) {
+              return Center(
+                  child: Text("Erro ao carregar: ${store.fetchError}"));
+            }
 
-          return ListView.builder(
-            padding: EdgeInsets.all(12),
-            itemCount: store.lists.length,
-            itemBuilder: (context, index) {
-              final ShopList list = store.lists[index];
-              return KeyedSubtree(
-                key: ValueKey(list.id),
-                child: AnimatedSize(
-                  duration: Duration(milliseconds: 300),
-                  child: _buildShopListCard(list),
-                ),
-              );
-            },
-          );
-        },
-      ),
-    );
-  }
+            return Stack(
+              children: [
+                // Conteúdo principal
+                if (store.lists.isEmpty)
+                  const Center(child: Text("Nenhuma lista disponível"))
+                else
+                  ListView.builder(
+                    padding: const EdgeInsets.all(12),
+                    itemCount: store.lists.length,
+                    itemBuilder: (context, index) {
+                      final ShopList list = store.lists[index];
+                      return KeyedSubtree(
+                        key: ValueKey(list.id),
+                        child: AnimatedSize(
+                          duration: const Duration(milliseconds: 300),
+                          child: ShoplistCard(list: list),
+                        ),
+                      );
+                    },
+                  ),
 
-  Widget _buildShopListCard(ShopList list) {
-    return Card(
-      margin: EdgeInsets.symmetric(vertical: 8),
-      elevation: 3,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              list.name,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8),
-            ...list.items.map((item) => _buildItemTile(item)).toList(),
-          ],
+                // Banner de erro de conexão
+                if (!store.isWebSocketConnected)
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    child: _buildConnectionErrorBanner(),
+                  ),
+              ],
+            );
+          },
         ),
       ),
-    );
-  }
-
-  Widget _buildItemTile(ShopItem item) {
-    return Row(
-      children: [
-        Checkbox(
-          value: item.checked,
-          onChanged: null,
-        ),
-        Expanded(
-          child: Text(
-            item.item,
-            style: TextStyle(
-              fontSize: 16,
-              decoration: item.checked ? TextDecoration.lineThrough : null,
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
+
+// class ShoplistCard extends StatelessWidget {
+//   final ShopList list;
+
+//   const ShoplistCard({required this.list});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Card(
+//       child: ListTile(
+//         title: Text(list.name),
+//         subtitle: Text("${list.items.length} itens"),
+//         onTap: () {
+//           // Navegar para detalhes da lista
+//         },
+//       ),
+//     );
+//   }
+// }
 
 /*
 class ShoplistPage extends StatelessWidget {

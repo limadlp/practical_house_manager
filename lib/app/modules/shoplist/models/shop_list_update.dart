@@ -30,4 +30,13 @@ class ShopListUpdate {
       'item': item?.toJson(),
     };
   }
+
+  factory ShopListUpdate.error() {
+    return ShopListUpdate(
+      type: 'ERROR',
+      listId: '',
+      itemId: null,
+      item: null,
+    );
+  }
 }

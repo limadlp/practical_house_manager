@@ -13,6 +13,6 @@ class ShoplistModule extends Module {
 
   @override
   void routes(r) {
-    r.child('/', child: (context) => ShoplistPage());
+    r.child('/', child: (context) => const ShoplistPage());
   }
 }
