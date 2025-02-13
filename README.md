@@ -49,6 +49,7 @@ The application follows a Modular MVVM architecture with Repository pattern:
 
 ## Project Structure
 
+```bash
 lib/
 ├── app/
 │ ├── modules/
@@ -60,7 +61,7 @@ lib/
 │ │ ├── services/
 │ │ ├── widgets/
 │ │ └── utils/
-└── main.dart
+│ └── main.dart
 
 Each module follows:
 module/
@@ -70,6 +71,7 @@ module/
 ├── repositories/
 ├── services/
 └── module.dart
+```
 
 ## Getting Started
 
