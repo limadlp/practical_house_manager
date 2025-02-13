@@ -78,7 +78,8 @@ module/
 1. Clone the repository
 2. Configure environment variables
 3. Run `flutter pub get` to install dependencies
-4. Run the app using `flutter run`
+4. Clone and run the Go API from https://github.com/limadlp/house-manager-api
+5. Run the app using `flutter run`
 
 ## Dependencies
 
