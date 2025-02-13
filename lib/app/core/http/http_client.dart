@@ -4,6 +4,9 @@ class HttpClient {
   final Dio _dio = Dio(
     BaseOptions(
       baseUrl: 'http://localhost:8080',
+      connectTimeout: const Duration(seconds: 30),
+      receiveTimeout: const Duration(seconds: 60),
+      sendTimeout: const Duration(seconds: 30),
     ),
   );
 

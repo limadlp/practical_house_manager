@@ -3,14 +3,15 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:math' as math;
 import 'package:practical_house_manager/app/core/http/http_client.dart';
-import 'package:web_socket_channel/io.dart';
+import 'package:practical_house_manager/app/core/http/websocket_channel_factory.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 import '../models/shop_list.dart';
 import '../models/shop_list_update.dart'; // Novo modelo
 import 'shoplist_repository.dart';
 
 class ShopListRepositoryImpl implements ShopListRepository {
   final HttpClient _client = HttpClient();
-  IOWebSocketChannel? _channel;
+  WebSocketChannel? _channel;
   StreamSubscription? _subscription;
   Function(ShopListUpdate)? _onUpdate; // Callback para o Store
   int _retryCount = 0;
@@ -72,7 +73,7 @@ class ShopListRepositoryImpl implements ShopListRepository {
   }
 
   void _connectWebSocket() {
-    _channel = IOWebSocketChannel.connect(
+    _channel = createWebSocketChannel(
       "ws://localhost:8080/ws",
       pingInterval: const Duration(seconds: 30),
     );
@@ -92,6 +93,7 @@ class ShopListRepositoryImpl implements ShopListRepository {
 
   void _handleMessage(dynamic message) {
     try {
+      log("Mensagem recebida: $message");
       final update = ShopListUpdate.fromJson(jsonDecode(message));
       _onUpdate?.call(update);
     } catch (e) {

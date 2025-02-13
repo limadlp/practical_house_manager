@@ -57,10 +57,21 @@ abstract class _ShopListStoreBase with Store {
 
   @action
   void applyUpdate(ShopListUpdate update) {
-    final index = lists.indexWhere((l) => l.id == update.listId);
-    if (index != -1) {
-      final updatedList = lists[index].applyUpdate(update);
-      lists[index] = updatedList;
+    if (update.list != null) {
+      // Atualização completa ou criação de lista
+      final index = lists.indexWhere((l) => l.id == update.listId);
+      if (index != -1) {
+        lists[index] = update.list!;
+      } else {
+        lists.add(update.list!);
+      }
+    } else {
+      // Atualização em nível de item
+      final index = lists.indexWhere((l) => l.id == update.listId);
+      if (index != -1) {
+        final updatedList = lists[index].applyUpdate(update);
+        lists[index] = updatedList;
+      }
     }
   }
 

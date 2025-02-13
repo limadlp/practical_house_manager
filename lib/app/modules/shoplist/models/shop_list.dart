@@ -1,6 +1,5 @@
+import 'package:practical_house_manager/app/modules/shoplist/models/shop_item.dart';
 import 'package:practical_house_manager/app/modules/shoplist/models/shop_list_update.dart';
-
-import 'shop_item.dart';
 
 class ShopList {
   final String id;
@@ -50,15 +49,12 @@ class ShopList {
     );
   }
 
-  // Aplica uma atualização à lista
+  // Aplica uma atualização à lista (nível de item)
   ShopList applyUpdate(ShopListUpdate update) {
     switch (update.type) {
       case 'CREATE':
         // Adiciona um novo item à lista
-        return copyWith(
-          items: [...items, update.item!],
-        );
-
+        return copyWith(items: [...items, update.item!]);
       case 'UPDATE':
         // Atualiza um item existente
         return copyWith(
@@ -66,15 +62,12 @@ class ShopList {
             return item.id == update.itemId ? update.item! : item;
           }).toList(),
         );
-
       case 'DELETE':
         // Remove um item da lista
         return copyWith(
           items: items.where((item) => item.id != update.itemId).toList(),
         );
-
       default:
-        // Retorna a lista sem alterações se o tipo de atualização for desconhecido
         return this;
     }
   }
