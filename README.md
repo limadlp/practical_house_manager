@@ -7,7 +7,7 @@ A Flutter application for managing shared living spaces and roommate coordinatio
 - **Real-time Shopping List**
 
   - Collaborative shopping list visible to all roommates
-  - Real-time updates using Firebase
+  - Real-time updates using WebSocket
   - Add, edit, and mark items as purchased
   - Track who bought what
 
@@ -28,48 +28,67 @@ A Flutter application for managing shared living spaces and roommate coordinatio
 ## Technical Stack
 
 - **Frontend**: Flutter
-- **State Management**: Provider
-- **Navigation**: Go Router
-- **Backend**: Firebase
-  - Cloud Firestore for real-time data
-  - Firebase Authentication
-  - Firebase Storage for files/images
-  - Firebase Cloud Messaging for notifications
+- **State Management**: MobX
+- **Navigation & DI**: Flutter Modular
+- **Backend**: RESTful API & WebSocket
+  - Dio for HTTP requests
+  - WebSocket for real-time features
+  - JWT Authentication
+  - Cloud Storage for files/images
+  - WebSocket for real-time notifications
 
 ## Architecture
 
-The application follows the MVVM (Model-View-ViewModel) architecture pattern:
+The application follows a Modular MVVM architecture with Repository pattern:
 
-- **Models**: Data structures and business logic
+- **Models**: Data structures and entities
 - **Views**: UI components and screens
-- **ViewModels**: State management and business logic handling
-- **Services**: Firebase and other external service integrations
+- **Stores**: State management with MobX
+- **Repositories**: Data layer abstraction
+- **Services**: API, WebSocket, and other external service integrations
 
 ## Project Structure
 
 lib/
+├── app/
+│ ├── modules/
+│ │ ├── auth/
+│ │ ├── shopping/
+│ │ ├── expenses/
+│ │ └── chores/
+│ ├── core/
+│ │ ├── services/
+│ │ ├── widgets/
+│ │ └── utils/
+└── main.dart
+
+Each module follows:
+module/
 ├── models/
-├── views/
-├── viewmodels/
+├── pages/
+├── stores/
+├── repositories/
 ├── services/
-├── routes/
-└── utils/
+└── module.dart
 
 ## Getting Started
 
 1. Clone the repository
-2. Set up Firebase project and add configuration files
+2. Configure environment variables
 3. Run `flutter pub get` to install dependencies
 4. Run the app using `flutter run`
 
 ## Dependencies
 
-- provider: ^6.0.0
-- go_router: ^10.0.0
-- firebase_core: ^2.0.0
-- firebase_auth: ^4.0.0
-- cloud_firestore: ^4.0.0
-- firebase_storage: ^11.0.0
+- flutter_modular: ^6.3.4
+- mobx: ^2.5.0
+- flutter_mobx: ^2.3.0
+- dio: ^5.8.0+1
+- web_socket_channel: ^3.0.2
+- flutter_staggered_grid_view: ^0.7.0
+- logging: ^1.3.0
+- build_runner: ^2.4.14
+- mobx_codegen: ^2.7.0
 
 ## Contributing
 
